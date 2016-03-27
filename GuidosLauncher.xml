@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<programs>
+  <program>
+    <label>Launch Kodi</label>
+    <path>C:\Program Files (x86)\Kodi\Kodi.exe</path>
+    <arguments></arguments>
+  </program>
+  <program>
+    <label>Netflix</label>
+    <path>http://www.netflix.com</path>
+    <arguments></arguments>
+  </program>
+  <program>
+    <label>Chrome</label>
+    <path>%LOCALAPPDATA%\Google\Chrome\Application\chrome.exe</path>
+    <arguments></arguments>
+  </program>
+  <program>
+    <label>Zattoo</label>
+    <path>iexplore</path>
+    <arguments>http://www.zattoo.com</arguments>
+  </program>
+</programs>

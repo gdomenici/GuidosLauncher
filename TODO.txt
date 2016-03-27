@@ -1,0 +1,3 @@
+﻿- Skinnable
+- Gradient
+- More than 9 shortcuts
