@@ -1,5 +1,5 @@
 ﻿# Introduction 
-This is a simple launcher to start any number of apps and/or URLs, either using the mouse or a number between 1 and 9.
+This is a simple Windows launcher to start any number of apps and/or URLs, either using the mouse or a number between 1 and 9. It is mostly meant for a Home Theater PC (HTPC) kind of scenario.
 
 # Configuration
 The only configuration is in a file called GuidosLauncher.xml, which must be located in the same dir as the executable:
