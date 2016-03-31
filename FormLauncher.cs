@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using System.IO;
 using System.Xml.Linq;
 using System.Diagnostics;
+using System.Drawing.Drawing2D;
 
 namespace Domenici.App.GuidosLauncher
 {
@@ -55,10 +56,9 @@ namespace Domenici.App.GuidosLauncher
                 // newLabel
                 // 
                 newLabel.AutoSize = true;
-                newLabel.Font = new System.Drawing.Font("Lucida Sans Unicode", 26.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                newLabel.Font = new System.Drawing.Font("Lucida Sans Unicode", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
                 newLabel.LinkColor = System.Drawing.Color.White;
                 newLabel.Name = "newLabel" + count.ToString();
-                newLabel.Size = new System.Drawing.Size(227, 42);
                 newLabel.TabIndex = count;
                 newLabel.TabStop = true;
                 newLabel.Text = string.Format("{0} ↑ {1}", count + 1, labelText);
@@ -69,6 +69,7 @@ namespace Domenici.App.GuidosLauncher
                 newLabel.LinkClicked += new LinkLabelLinkClickedEventHandler(LabelClicked);
                 newLabel.MouseEnter += new EventHandler(newLabel_MouseEnter);
                 newLabel.MouseLeave += new EventHandler(newLabel_MouseLeave);
+                newLabel.BackColor = Color.Transparent;
                 newLabel.Tag = new LaunchItem
                 {
                     LabelText = labelText,
@@ -135,6 +136,18 @@ namespace Domenici.App.GuidosLauncher
                 LabelClicked(linkLabelExit, null);
             }
 
+        }
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            base.OnPaint(e);
+
+            LinearGradientBrush brush = new LinearGradientBrush(
+                this.ClientRectangle,
+                Color.Black,
+                Color.Violet, LinearGradientMode.ForwardDiagonal);
+
+            e.Graphics.FillRectangle(brush, this.ClientRectangle);
         }
 
 
