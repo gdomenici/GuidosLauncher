@@ -55,6 +55,12 @@
     <Compile Include="FormLauncher.Designer.cs">
       <DependentUpon>FormLauncher.cs</DependentUpon>
     </Compile>
+    <Compile Include="PanelDoubleBuffered.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PanelDoubleBuffered.Designer.cs">
+      <DependentUpon>PanelDoubleBuffered.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="FormLauncher.resx">

@@ -21,6 +21,8 @@ namespace Domenici.App.GuidosLauncher
         public FormLauncher()
         {
             InitializeComponent();
+            // Important - the below prevents flickering
+            this.DoubleBuffered = true;
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -37,7 +39,7 @@ namespace Domenici.App.GuidosLauncher
                 doc = XDocument.Load(fs);
             }
             int count = 0;
-            int currY = 158;
+            int currY = 100;
             foreach (var oneProgram in doc.Element("programs").Elements("program"))
             {
                 var labelElem = oneProgram.Element("label");
@@ -56,15 +58,15 @@ namespace Domenici.App.GuidosLauncher
                 // newLabel
                 // 
                 newLabel.AutoSize = true;
-                newLabel.Font = new System.Drawing.Font("Lucida Sans Unicode", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-                newLabel.LinkColor = System.Drawing.Color.White;
+                newLabel.Font = new Font("Lucida Sans Unicode", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                newLabel.LinkColor = Color.White;
                 newLabel.Name = "newLabel" + count.ToString();
                 newLabel.TabIndex = count;
                 newLabel.TabStop = true;
                 newLabel.Text = string.Format("{0} ↑ {1}", count + 1, labelText);
                 int centerX = (this.Width - newLabel.Width) / 2;
-                newLabel.Location = new System.Drawing.Point(centerX, currY);
-                newLabel.Anchor = System.Windows.Forms.AnchorStyles.None;
+                newLabel.Location = new Point(centerX, currY);
+                newLabel.Anchor = AnchorStyles.Left | AnchorStyles.Top;
                 newLabel.Dock = DockStyle.None;
                 newLabel.LinkClicked += new LinkLabelLinkClickedEventHandler(LabelClicked);
                 newLabel.MouseEnter += new EventHandler(newLabel_MouseEnter);
@@ -76,7 +78,7 @@ namespace Domenici.App.GuidosLauncher
                     Path = path,
                     Arguments = arguments
                 };
-                this.Controls.Add(newLabel);
+                this.panel1.Controls.Add(newLabel);
                 this.linkLabels.Add(newLabel);
                 ResumeLayout(false);
 
@@ -138,8 +140,10 @@ namespace Domenici.App.GuidosLauncher
 
         }
 
+        private int onPaint = 0;
         protected override void OnPaint(PaintEventArgs e)
         {
+            Console.WriteLine(string.Format("OnPaint called {0} times", ++onPaint));
             base.OnPaint(e);
 
             LinearGradientBrush brush = new LinearGradientBrush(
@@ -148,6 +152,36 @@ namespace Domenici.App.GuidosLauncher
                 Color.Violet, LinearGradientMode.ForwardDiagonal);
 
             e.Graphics.FillRectangle(brush, this.ClientRectangle);
+        }
+
+        private void panel1_Resize(object sender, EventArgs e)
+        {
+
+        }
+
+        private void FormLauncher_Resize(object sender, EventArgs e)
+        {
+        }
+
+
+        private void FormLauncher_Shown(object sender, EventArgs e)
+        {
+            SuspendLayout();
+
+            var linkLabels = (
+                from Control oneControl in panel1.Controls
+                where oneControl is LinkLabel
+                where oneControl != linkLabelExit // leave out the exceptional control
+                select oneControl);
+
+            int widestLabel = linkLabels.Max(oneLabel => { return oneLabel.Width; });
+            foreach (LinkLabel oneLabel in linkLabels)
+            {
+                // Left-aligned; only widest label is screen-centered
+                int centerX = (this.panel1.Width - widestLabel) / 2;
+                oneLabel.Left = centerX;
+            }
+            ResumeLayout(false);
         }
 
 
