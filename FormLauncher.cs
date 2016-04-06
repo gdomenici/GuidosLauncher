@@ -140,10 +140,8 @@ namespace Domenici.App.GuidosLauncher
 
         }
 
-        private int onPaint = 0;
         protected override void OnPaint(PaintEventArgs e)
         {
-            Console.WriteLine(string.Format("OnPaint called {0} times", ++onPaint));
             base.OnPaint(e);
 
             LinearGradientBrush brush = new LinearGradientBrush(
@@ -175,12 +173,20 @@ namespace Domenici.App.GuidosLauncher
                 select oneControl);
 
             int widestLabel = linkLabels.Max(oneLabel => { return oneLabel.Width; });
+            LinkLabel firstLabel = null;
             foreach (LinkLabel oneLabel in linkLabels)
             {
+                if (firstLabel == null)
+                {
+                    firstLabel = oneLabel;
+                }
                 // Left-aligned; only widest label is screen-centered
                 int centerX = (this.panel1.Width - widestLabel) / 2;
                 oneLabel.Left = centerX;
             }
+
+            selectionHighlight1.Location = firstLabel.Location;
+            selectionHighlight1.Size = firstLabel.Size;
             ResumeLayout(false);
         }
 

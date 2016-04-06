@@ -31,8 +31,10 @@
             this.label1 = new System.Windows.Forms.Label();
             this.linkLabelExit = new System.Windows.Forms.LinkLabel();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.selectionHighlight1 = new Domenici.App.GuidosLauncher.SelectionHighlight();
             this.panel1 = new Domenici.App.GuidosLauncher.PanelDoubleBuffered();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -74,11 +76,20 @@
             this.pictureBox1.TabIndex = 1;
             this.pictureBox1.TabStop = false;
             // 
+            // selectionHighlight1
+            // 
+            this.selectionHighlight1.BackColor = System.Drawing.SystemColors.Control;
+            this.selectionHighlight1.Location = new System.Drawing.Point(632, 403);
+            this.selectionHighlight1.Name = "selectionHighlight1";
+            this.selectionHighlight1.Size = new System.Drawing.Size(290, 42);
+            this.selectionHighlight1.TabIndex = 0;
+            // 
             // panel1
             // 
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel1.BackColor = System.Drawing.Color.Transparent;
+            this.panel1.Controls.Add(this.selectionHighlight1);
             this.panel1.Location = new System.Drawing.Point(6, 90);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1084, 595);
@@ -108,6 +119,7 @@
             this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Form1_KeyPress);
             this.Resize += new System.EventHandler(this.FormLauncher_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -119,6 +131,7 @@
         private System.Windows.Forms.LinkLabel linkLabelExit;
         private System.Windows.Forms.PictureBox pictureBox1;
         private PanelDoubleBuffered panel1;
+        private SelectionHighlight selectionHighlight1;
 
 
 
