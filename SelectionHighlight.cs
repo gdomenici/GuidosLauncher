@@ -30,18 +30,34 @@ namespace Domenici.App.GuidosLauncher
 
         protected override void OnPaintBackground(PaintEventArgs e)
         {
-            //base.OnPaintBackground(e);
+            // Don't call base.OnPaintBackground() because we want to
+            // leave it transparent
         }
 
+        protected override void WndProc(ref Message m)
+        {
+            const int WM_NCHITTEST = 0x0084;
+            const int HTTRANSPARENT = (-1);
+
+            if (m.Msg == WM_NCHITTEST)
+            {
+                // Pass all mouse events to underlying control
+                // See http://stackoverflow.com/a/8635626/71791
+                m.Result = (IntPtr)HTTRANSPARENT;
+            }
+            else
+            {
+                base.WndProc(ref m);
+            }
+        }
 
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
 
-            double halfHeight = (double)Height / (float)2;
-            Console.WriteLine("halfHeight-2={0}", (int)halfHeight - 2);
+            int gradientHeight = Height / 2;
 
-            Rectangle halfRectangle = new Rectangle(0, (int)halfHeight, Width, (int)halfHeight-2);
+            Rectangle halfRectangle = new Rectangle(0, Height - gradientHeight -1, Width, gradientHeight);
             //Rectangle halfRectangle = this.ClientRectangle;
             LinearGradientBrush brush = new LinearGradientBrush(
                 halfRectangle,

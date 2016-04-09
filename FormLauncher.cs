@@ -64,6 +64,7 @@ namespace Domenici.App.GuidosLauncher
                 newLabel.TabIndex = count;
                 newLabel.TabStop = true;
                 newLabel.Text = string.Format("{0} ↑ {1}", count + 1, labelText);
+                newLabel.LinkBehavior = LinkBehavior.HoverUnderline;
                 int centerX = (this.Width - newLabel.Width) / 2;
                 newLabel.Location = new Point(centerX, currY);
                 newLabel.Anchor = AnchorStyles.Left | AnchorStyles.Top;
