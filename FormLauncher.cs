@@ -17,6 +17,7 @@ namespace Domenici.App.GuidosLauncher
     {
         private int linkCount = 0;
         private List<LinkLabel> linkLabels = new List<LinkLabel>();
+        private LinkLabel selectedLinkLabel = null;
         
         public FormLauncher()
         {
@@ -34,7 +35,7 @@ namespace Domenici.App.GuidosLauncher
                 return;
             }
             XDocument doc = null;
-            using (FileStream fs = File.Open("GuidosLauncher.xml", FileMode.Open))
+            using (FileStream fs = File.Open("GuidosLauncher.xml", FileMode.Open, FileAccess.Read))
             {
                 doc = XDocument.Load(fs);
             }
@@ -71,7 +72,6 @@ namespace Domenici.App.GuidosLauncher
                 newLabel.Dock = DockStyle.None;
                 newLabel.LinkClicked += new LinkLabelLinkClickedEventHandler(LabelClicked);
                 newLabel.MouseEnter += new EventHandler(newLabel_MouseEnter);
-                newLabel.MouseLeave += new EventHandler(newLabel_MouseLeave);
                 newLabel.BackColor = Color.Transparent;
                 newLabel.Tag = new LaunchItem
                 {
@@ -89,16 +89,10 @@ namespace Domenici.App.GuidosLauncher
             this.linkCount = count;
         }
 
-        void newLabel_MouseLeave(object sender, EventArgs e)
-        {
-            LinkLabel theLabel = (LinkLabel)sender;
-            theLabel.Text = theLabel.Text.Replace("→", "↑");
-        }
-
         void newLabel_MouseEnter(object sender, EventArgs e)
         {
             LinkLabel theLabel = (LinkLabel)sender;
-            theLabel.Text = theLabel.Text.Replace("↑", "→");
+            this.SelectedLinkLabel = theLabel;
         }
 
         private void LabelClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -136,9 +130,11 @@ namespace Domenici.App.GuidosLauncher
             }
             else if (e.KeyChar == (char)Keys.D0)
             {
+                // zero
                 LabelClicked(linkLabelExit, null);
+                e.Handled = true;
             }
-
+            
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -153,44 +149,91 @@ namespace Domenici.App.GuidosLauncher
             e.Graphics.FillRectangle(brush, this.ClientRectangle);
         }
 
-        private void panel1_Resize(object sender, EventArgs e)
-        {
-
-        }
-
-        private void FormLauncher_Resize(object sender, EventArgs e)
-        {
-        }
 
 
         private void FormLauncher_Shown(object sender, EventArgs e)
         {
             SuspendLayout();
-
-            var linkLabels = (
-                from Control oneControl in panel1.Controls
-                where oneControl is LinkLabel
-                where oneControl != linkLabelExit // leave out the exceptional control
-                select oneControl);
-
-            int widestLabel = linkLabels.Max(oneLabel => { return oneLabel.Width; });
-            LinkLabel firstLabel = null;
-            foreach (LinkLabel oneLabel in linkLabels)
+            try
             {
-                if (firstLabel == null)
+                int widestLabel = linkLabels.Max(oneLabel => { return oneLabel.Width; });
+                LinkLabel firstLabel = null;
+                foreach (LinkLabel oneLabel in linkLabels)
                 {
-                    firstLabel = oneLabel;
+                    if (firstLabel == null)
+                    {
+                        firstLabel = oneLabel;
+                    }
+                    // Left-aligned; only widest label is screen-centered
+                    int centerX = (this.panel1.Width - widestLabel) / 2;
+                    oneLabel.Left = centerX;
                 }
-                // Left-aligned; only widest label is screen-centered
-                int centerX = (this.panel1.Width - widestLabel) / 2;
-                oneLabel.Left = centerX;
-            }
+                this.SelectedLinkLabel = firstLabel;
 
-            selectionHighlight1.Location = firstLabel.Location;
-            selectionHighlight1.Size = firstLabel.Size;
-            ResumeLayout(false);
+            }
+            finally
+            {
+                ResumeLayout(false);
+            } 
         }
 
+        public LinkLabel SelectedLinkLabel
+        {
+            get
+            {
+                return this.selectedLinkLabel;                
+            }
+            set
+            {
+                LinkLabel prevSelected = this.selectedLinkLabel;
+                if (prevSelected != null)
+                {
+                    prevSelected.Text = prevSelected.Text.Replace("→", "↑");
+                }
+
+                this.selectedLinkLabel = value;
+                selectionHighlight1.Location = this.selectedLinkLabel.Location;
+                selectionHighlight1.Size = this.selectedLinkLabel.Size;
+                this.selectedLinkLabel.Text = this.selectedLinkLabel.Text.Replace("↑", "→");
+            }
+        
+        }
+
+
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == Keys.Up || keyData == Keys.Down)
+            {
+                if (this.SelectedLinkLabel != null)
+                {
+                    int selectedLinkLabelIndex = this.linkLabels.IndexOf(this.SelectedLinkLabel);
+                    if (keyData == Keys.Up)
+                    {
+                        selectedLinkLabelIndex -= 1;
+                        if (selectedLinkLabelIndex < 0)
+                        {
+                            selectedLinkLabelIndex = this.linkLabels.Count - 1;
+                        }
+                    }
+                    else
+                    {
+                        selectedLinkLabelIndex += 1;
+                        if (selectedLinkLabelIndex >= this.linkLabels.Count)
+                        {
+                            selectedLinkLabelIndex = 0;
+                        }
+                    }
+                    this.SelectedLinkLabel = this.linkLabels[selectedLinkLabelIndex];
+                }
+                return true;
+            }
+            else if (keyData == Keys.Enter || keyData == Keys.Return)
+            {
+                LabelClicked(this.SelectedLinkLabel, null);
+                return true;
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
 
     }
 }

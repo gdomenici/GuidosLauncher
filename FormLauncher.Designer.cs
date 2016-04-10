@@ -31,8 +31,8 @@
             this.label1 = new System.Windows.Forms.Label();
             this.linkLabelExit = new System.Windows.Forms.LinkLabel();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.selectionHighlight1 = new Domenici.App.GuidosLauncher.SelectionHighlight();
             this.panel1 = new Domenici.App.GuidosLauncher.PanelDoubleBuffered();
+            this.selectionHighlight1 = new Domenici.App.GuidosLauncher.SelectionHighlight();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -64,7 +64,6 @@
             this.linkLabelExit.Text = "0 ↑ Exit";
             this.linkLabelExit.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LabelClicked);
             this.linkLabelExit.MouseEnter += new System.EventHandler(this.newLabel_MouseEnter);
-            this.linkLabelExit.MouseLeave += new System.EventHandler(this.newLabel_MouseLeave);
             // 
             // pictureBox1
             // 
@@ -76,14 +75,6 @@
             this.pictureBox1.TabIndex = 1;
             this.pictureBox1.TabStop = false;
             // 
-            // selectionHighlight1
-            // 
-            this.selectionHighlight1.BackColor = System.Drawing.SystemColors.Control;
-            this.selectionHighlight1.Location = new System.Drawing.Point(632, 403);
-            this.selectionHighlight1.Name = "selectionHighlight1";
-            this.selectionHighlight1.Size = new System.Drawing.Size(290, 42);
-            this.selectionHighlight1.TabIndex = 0;
-            // 
             // panel1
             // 
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -94,6 +85,14 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1084, 595);
             this.panel1.TabIndex = 3;
+            // 
+            // selectionHighlight1
+            // 
+            this.selectionHighlight1.BackColor = System.Drawing.SystemColors.Control;
+            this.selectionHighlight1.Location = new System.Drawing.Point(632, 403);
+            this.selectionHighlight1.Name = "selectionHighlight1";
+            this.selectionHighlight1.Size = new System.Drawing.Size(290, 42);
+            this.selectionHighlight1.TabIndex = 0;
             // 
             // FormLauncher
             // 
@@ -117,7 +116,6 @@
             this.Load += new System.EventHandler(this.Form1_Load);
             this.Shown += new System.EventHandler(this.FormLauncher_Shown);
             this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Form1_KeyPress);
-            this.Resize += new System.EventHandler(this.FormLauncher_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
