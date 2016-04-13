@@ -29,10 +29,10 @@
         private void InitializeComponent()
         {
             this.label1 = new System.Windows.Forms.Label();
-            this.linkLabelExit = new System.Windows.Forms.LinkLabel();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.panel1 = new Domenici.App.GuidosLauncher.PanelDoubleBuffered();
             this.selectionHighlight1 = new Domenici.App.GuidosLauncher.SelectionHighlight();
+            this.linkLabelExit = new System.Windows.Forms.LinkLabel();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -49,22 +49,6 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Guido\'s Launcher";
             // 
-            // linkLabelExit
-            // 
-            this.linkLabelExit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.linkLabelExit.AutoSize = true;
-            this.linkLabelExit.BackColor = System.Drawing.Color.Transparent;
-            this.linkLabelExit.Font = new System.Drawing.Font("Lucida Sans Unicode", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.linkLabelExit.LinkColor = System.Drawing.Color.White;
-            this.linkLabelExit.Location = new System.Drawing.Point(885, 714);
-            this.linkLabelExit.Name = "linkLabelExit";
-            this.linkLabelExit.Size = new System.Drawing.Size(197, 59);
-            this.linkLabelExit.TabIndex = 2;
-            this.linkLabelExit.TabStop = true;
-            this.linkLabelExit.Text = "0 ↑ Exit";
-            this.linkLabelExit.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LabelClicked);
-            this.linkLabelExit.MouseEnter += new System.EventHandler(this.newLabel_MouseEnter);
-            // 
             // pictureBox1
             // 
             this.pictureBox1.Image = global::Domenici.App.GuidosLauncher.Properties.Resources.GuidosLauncherLogo1;
@@ -77,13 +61,15 @@
             // 
             // panel1
             // 
-            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel1.BackColor = System.Drawing.Color.Transparent;
             this.panel1.Controls.Add(this.selectionHighlight1);
+            this.panel1.Controls.Add(this.linkLabelExit);
             this.panel1.Location = new System.Drawing.Point(6, 90);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1084, 595);
+            this.panel1.Size = new System.Drawing.Size(1084, 680);
             this.panel1.TabIndex = 3;
             // 
             // selectionHighlight1
@@ -94,6 +80,22 @@
             this.selectionHighlight1.Size = new System.Drawing.Size(290, 42);
             this.selectionHighlight1.TabIndex = 0;
             // 
+            // linkLabelExit
+            // 
+            this.linkLabelExit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.linkLabelExit.AutoSize = true;
+            this.linkLabelExit.BackColor = System.Drawing.Color.Transparent;
+            this.linkLabelExit.Font = new System.Drawing.Font("Lucida Sans Unicode", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.linkLabelExit.LinkColor = System.Drawing.Color.White;
+            this.linkLabelExit.Location = new System.Drawing.Point(884, 621);
+            this.linkLabelExit.Name = "linkLabelExit";
+            this.linkLabelExit.Size = new System.Drawing.Size(197, 59);
+            this.linkLabelExit.TabIndex = 2;
+            this.linkLabelExit.TabStop = true;
+            this.linkLabelExit.Text = "0 ↑ Exit";
+            this.linkLabelExit.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LabelClicked);
+            this.linkLabelExit.MouseEnter += new System.EventHandler(this.newLabel_MouseEnter);
+            // 
             // FormLauncher
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -102,7 +104,6 @@
             this.ClientSize = new System.Drawing.Size(1094, 782);
             this.ControlBox = false;
             this.Controls.Add(this.panel1);
-            this.Controls.Add(this.linkLabelExit);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.label1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -113,11 +114,12 @@
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
-            this.Load += new System.EventHandler(this.Form1_Load);
+            this.Load += new System.EventHandler(this.FormLauncher_Load);
             this.Shown += new System.EventHandler(this.FormLauncher_Shown);
-            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Form1_KeyPress);
+            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.FormLauncher_KeyPress);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 

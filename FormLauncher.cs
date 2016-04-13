@@ -15,9 +15,15 @@ namespace Domenici.App.GuidosLauncher
 {
     public partial class FormLauncher : Form
     {
-        private int linkCount = 0;
-        private List<LinkLabel> linkLabels = new List<LinkLabel>();
+        private enum LinkColumn
+        { 
+            Middle,
+            Right
+        }
+
+        private Dictionary<LinkColumn, List<LinkLabel>> linkLabels = new Dictionary<LinkColumn, List<LinkLabel>>();
         private LinkLabel selectedLinkLabel = null;
+        private LinkColumn selectedColumn = LinkColumn.Middle;
         
         public FormLauncher()
         {
@@ -26,7 +32,7 @@ namespace Domenici.App.GuidosLauncher
             this.DoubleBuffered = true;
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        private void FormLauncher_Load(object sender, EventArgs e)
         {
             if (!File.Exists("GuidosLauncher.xml"))
             {
@@ -41,6 +47,7 @@ namespace Domenici.App.GuidosLauncher
             }
             int count = 0;
             int currY = 100;
+            this.linkLabels[LinkColumn.Middle] = new List<LinkLabel>();
             foreach (var oneProgram in doc.Element("programs").Elements("program"))
             {
                 var labelElem = oneProgram.Element("label");
@@ -53,13 +60,13 @@ namespace Domenici.App.GuidosLauncher
                 string arguments = argumentsElem.Value;
 
 
-                LinkLabel newLabel = new System.Windows.Forms.LinkLabel();
+                LinkLabel newLabel = new LinkLabel();
                 SuspendLayout();
                 // 
                 // newLabel
                 // 
                 newLabel.AutoSize = true;
-                newLabel.Font = new Font("Lucida Sans Unicode", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                newLabel.Font = new Font("Lucida Sans Unicode", 36F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
                 newLabel.LinkColor = Color.White;
                 newLabel.Name = "newLabel" + count.ToString();
                 newLabel.TabIndex = count;
@@ -80,13 +87,17 @@ namespace Domenici.App.GuidosLauncher
                     Arguments = arguments
                 };
                 this.panel1.Controls.Add(newLabel);
-                this.linkLabels.Add(newLabel);
+                this.linkLabels[LinkColumn.Middle].Add(newLabel);
                 ResumeLayout(false);
 
                 currY += newLabel.Height * 2;
                 count++;
             }
-            this.linkCount = count;
+            this.selectedColumn = LinkColumn.Middle;
+
+            this.linkLabels[LinkColumn.Right] = new List<LinkLabel>();
+            this.linkLabels[LinkColumn.Right].Add(linkLabelExit);
+
         }
 
         void newLabel_MouseEnter(object sender, EventArgs e)
@@ -118,14 +129,14 @@ namespace Domenici.App.GuidosLauncher
             public string Arguments { get; set; }
         }
 
-        private void Form1_KeyPress(object sender, KeyPressEventArgs e)
+        private void FormLauncher_KeyPress(object sender, KeyPressEventArgs e)
         {
             char firstKey = (char)Keys.D1;
-            char lastKey = (char)(firstKey + this.linkCount - 1);
+            char lastKey = (char)(firstKey + this.linkLabels[selectedColumn].Count - 1);
             if (e.KeyChar >= firstKey && e.KeyChar <= lastKey)
             {
                 int linkIndex = (int)(e.KeyChar - firstKey);
-                LabelClicked(this.linkLabels[linkIndex], null);
+                LabelClicked(this.linkLabels[selectedColumn][linkIndex], null);
                 e.Handled = true;
             }
             else if (e.KeyChar == (char)Keys.D0)
@@ -156,9 +167,9 @@ namespace Domenici.App.GuidosLauncher
             SuspendLayout();
             try
             {
-                int widestLabel = linkLabels.Max(oneLabel => { return oneLabel.Width; });
+                int widestLabel = linkLabels[LinkColumn.Middle].Max(oneLabel => { return oneLabel.Width; });
                 LinkLabel firstLabel = null;
-                foreach (LinkLabel oneLabel in linkLabels)
+                foreach (LinkLabel oneLabel in linkLabels[LinkColumn.Middle])
                 {
                     if (firstLabel == null)
                     {
@@ -206,26 +217,34 @@ namespace Domenici.App.GuidosLauncher
             {
                 if (this.SelectedLinkLabel != null)
                 {
-                    int selectedLinkLabelIndex = this.linkLabels.IndexOf(this.SelectedLinkLabel);
+                    int selectedLinkLabelIndex = this.linkLabels[selectedColumn].IndexOf(this.SelectedLinkLabel);
                     if (keyData == Keys.Up)
                     {
                         selectedLinkLabelIndex -= 1;
                         if (selectedLinkLabelIndex < 0)
                         {
-                            selectedLinkLabelIndex = this.linkLabels.Count - 1;
+                            selectedLinkLabelIndex = this.linkLabels[selectedColumn].Count - 1;
                         }
                     }
                     else
                     {
                         selectedLinkLabelIndex += 1;
-                        if (selectedLinkLabelIndex >= this.linkLabels.Count)
+                        if (selectedLinkLabelIndex >= this.linkLabels[selectedColumn].Count)
                         {
                             selectedLinkLabelIndex = 0;
                         }
                     }
-                    this.SelectedLinkLabel = this.linkLabels[selectedLinkLabelIndex];
+                    this.SelectedLinkLabel = this.linkLabels[selectedColumn][selectedLinkLabelIndex];
                 }
                 return true;
+            }
+            else if (keyData == Keys.Left || keyData == Keys.Right)
+            {
+                this.selectedColumn = (this.selectedColumn == LinkColumn.Middle) ? LinkColumn.Right : LinkColumn.Middle;
+                if (this.linkLabels[selectedColumn].Count > 0)
+                {
+                    SelectedLinkLabel = this.linkLabels[selectedColumn][0];
+                }
             }
             else if (keyData == Keys.Enter || keyData == Keys.Return)
             {
